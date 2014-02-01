@@ -34,6 +34,11 @@ if(User::isLoggedIn()) {
 			View::showLogin();
 			break;
 		case "posts":
+			if(Database::getNumberOfPosts() === 0 ) {
+				$GLOBALS["ERROR"] = "No posts to show";
+				View::showNewPost();
+				break;
+			}
 			View::showPosts();
 			break;
 		case "newpost":
@@ -86,6 +91,18 @@ if(User::isLoggedIn()) {
 		case "uploadimage":
 			Images::uploadImage($_FILES['image']);
 			View::showImagePage();
+			break;
+		case "recoverbackup":
+			if(File::fileExists("content/backup.json")) {
+				if(Json::readJsonFile("content/backup.json")["id"]===false) {
+					View::showNewPost(true);//show new post screen with the backup data loaded
+				}
+				else {
+					View::showPostEditor("backup");//show new post screen with the backup data loaded
+				}
+			}
+			$GLOBALS["ERROR"] = "No backup file to recover";
+			View::showPosts();
 			break;
 		default:
 			View::showPosts();

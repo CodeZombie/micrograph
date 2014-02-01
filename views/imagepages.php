@@ -18,7 +18,11 @@
 					<h3 class="panel-title">Image List</h3>
 				</div>
 				<div class="panel-body">
+				<?php if(Images::getImageList(0,800) == null) { ?>
+					nothing to show
+				<?php } ?>
 				<?php foreach( Images::getImageList(0,800) as $img) { ?>
+					
 						<div class="col-xs-6 col-md-3">
 							<a href="#" class="thumbnail">
 								<img src="<?php echo "content/images/" . $img; ?>" style="height:128px; width:128px;"  alt="...">

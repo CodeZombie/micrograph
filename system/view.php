@@ -31,12 +31,8 @@ class View {
 		include("/../views/imagepages.php");
 		include("/../views/footer.php");
 	}
+	
 	public static function showPosts($currentPage = null) {
-		if(Database::getNumberOfPosts() === 0 ) {
-			$GLOBALS["ERROR"] = "No posts to show";
-			self::showNewPost();
-			return false;
-		}
 		$tagFilter = Header::getHeaderGet("tag");
 		
 		if($tagFilter == "") {

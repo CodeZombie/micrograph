@@ -33,13 +33,14 @@
 				</div>
 				<h5 class="form-subgroup">Messages</h5>
 				<div class="panel-body ">
-					<div class="panel panel-danger">
+					<div class="panel panel-default">
 						<div class="panel-heading">
 						Important!
 						</div>
 						<div class="panel-body">
 						You have one unsaved backup </br></br>
-						<input class="btn btn-warning fullwidth" style="height:34px !important;" value="recover" type="submit" >
+						<a href="<?php $_SERVER['SCRIPT_NAME'] ?>?action=recoverbackup" class="btn btn-primary fullwidth" style="height:34px !important;">Recover</a>
+						<a href="<?php $_SERVER['SCRIPT_NAME'] ?>?action=deletebackup" class="btn btn-danger fullwidth" style="height:34px !important;">Delete backup</a>
 						</div>
 						
 					</div>
