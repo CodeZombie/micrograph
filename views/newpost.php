@@ -13,6 +13,20 @@
 				<input onclick="hideMessageBox();" class="btn btn-primary floatright" value="Okay" type="submit" >
 			</div>
 		</div>
+		<div id="imagebox" class="panel panel-default" style="display:none;">
+			<div class="panel-heading" id="imageboxtitle">Choose an image</div>
+			<div id="imageboxcontent" class="panel-body">
+				<div id="imageboxcontentleft" style="text-align:center; float:left; width:10%;">
+				</div>
+				<div id="imageboxcontentcenter" style="text-align:center; float:left; width:80%;">
+				</div>
+				<div id="imageboxcontentright" style="text-align:center; float:left; width:10%;">
+				</div>
+				<div id="imageboxcontentbottom" class="fullwidth" style="float:left;">
+				<a onclick="hideImageBox();" class="btn btn-danger floatright">close</a>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <div class="container">
@@ -31,39 +45,18 @@
 				<div class="panel-heading">
 					<h3 class="panel-title">Images</h3>
 				</div>
+				
 				<h5 class="form-subgroup">Actions</h5>
 				<div class="panel-body">
 					<form id="imgupload" method="post" enctype="multipart/form-data" action="system/ajax/uploadimage.php">
 						<input class="btn btn-default fullwidth" type="file" name="image">
 						<input class="btn btn-default fullwidth" name="Submit" type="submit" value="Upload image">
+						
 					</form>
 				</div>
-				<h5 class="form-subgroup">List</h5>
+				<h5 class="form-subgroup">Actions</h5>
 				<div class="panel-body">
-					<div class="panel panel-default">
-						<div class="panel-body img-selector-panel" onclick="insertAtCaret('postcontent','![alt text](views/img/placeholder.png)');">
-							<div class="media">
-								<div class="pull-left" >
-									<img class="media-object" src="views/img/placeholder.png" alt="...">
-								</div>
-								<em>placeholder.png</em></br>
-								<em>12kb</em></br>
-								<em>Jan 15 2014</em></br>
-							</div>
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-body img-selector-panel" onclick="insertAtCaret('postcontent','![alt text](views/img/what.jpg)');">
-							<div class="media">
-								<div class="pull-left" >
-									<img class="media-object" src="views/img/what.jpg" alt="...">
-								</div>
-								<em>placeholder.png</em></br>
-								<em>12kb</em></br>
-								<em>Jan 15 2014</em></br>
-							</div>
-						</div>
-					</div>
+					<a class="btn btn-default fullwidth" onclick="getImageList(0, 6);">Show image list</a>
 				</div>
 			</div>
 		</div>
@@ -85,12 +78,12 @@
 							<div id="previewcontent" class="content_field preview_field" style="display:none;"></div>
 							<textarea name="post_content" id="postcontent" type="text" class="form-control no-border-radius content_field" placeholder="Post Content" ><?php if($backup==true){echo $post_content_value;} ?></textarea>
 							<div class="panel panel-default no-border-radius panel-under-content-field">
-								<input name="post_tags" type="text" class="form-control" placeholder="Tags, Seperated, By, Commas" <?php if($backup==true){echo 'value="' . $post_tags_value . '"';} ?>>
+								<input id="posttags" name="post_tags" type="text" class="form-control" placeholder="Tags, Seperated, By, Commas" <?php if($backup==true){echo 'value="' . $post_tags_value . '"';} ?>>
 							</div>
 							<div class="panel panel-default no-border-top-radius panel-under-tag-field">
 								<div class="btn-group">
 									<input class="btn btn-primary" style="height:34px;" value="Publish" type="submit">
-									<a class="btn btn-info" onclick="saveBackup()">Save As Draft</a>
+									<a class="btn btn-info" onclick="saveBackup()">Save temp backup</a>
 									<a class="btn btn-danger" href="">Discard</a>
 								</div>
 							</div>

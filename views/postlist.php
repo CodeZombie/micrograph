@@ -31,6 +31,7 @@
 						</div>
 					</form>
 				</div>
+				<?php if(File::fileExists("content/backup.json")) { ?>
 				<h5 class="form-subgroup">Messages</h5>
 				<div class="panel-body ">
 					<div class="panel panel-default">
@@ -45,6 +46,7 @@
 						
 					</div>
 				</div>
+				<?php } ?>
 			</div>
 		</div>
 		<div class="col-md-9">

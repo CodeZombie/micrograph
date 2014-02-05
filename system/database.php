@@ -139,10 +139,12 @@ class Database {
 		Json::saveJsonFile($newtags,"content/tags.json");
 		return true;
 	}
-	
+	public static function deleteBackup() {
+		File::deleteFile("content/markdown/backup.md");
+		return File::deleteFile("content/backup.json");
+	}
 	public static function saveBackup($id = false, $title, $content, $tags, $status = "draft", $images = false, $custom_css = false) {
 		$postdata["id"] = $id;
-		//$postdata["images"] = $images;
 		$postdata["title"] = $title;
 		$postdata["status"] = $status;
 		$postdata["css"] = $custom_css;

@@ -4,7 +4,6 @@ TODO:
 	Make tag searching case insensitive
 	Create a Draftdata folder. and handle drafts the same way as posts, but totally isolate them from posts (create a "drafts" tab in the nav)
 	
-	
 */
 DEFINE("SESSION_TIMEOUT_TIME",14400);
 
@@ -60,7 +59,7 @@ if(User::isLoggedIn()) {
 			//save backup (in case savePost returns false)
 			Database::saveBackup(false, Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'));
 			if(Database::savePost(Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'))) {
-				//delete backup file!!!
+				Database::deleteBackup();
 				View::showPosts("last");
 			}
 			else {
@@ -71,12 +70,11 @@ if(User::isLoggedIn()) {
 		case "savepostedit":
 			Database::saveBackup(Header::getHeaderGet('id'), Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'));
 			if(Database::savePost(Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'),"published",false,Header::getHeaderGet('id'))) {
-				//File::deleteFile("");
-				//delete backup file!!!
+				Database::deleteBackup();
 				View::showPosts();
 			}
 			else {
-				View::showPostEditor("backup");//"backup");
+				View::showPostEditor("backup");
 			}
 			break;
 		case "deletepost":
@@ -100,8 +98,15 @@ if(User::isLoggedIn()) {
 				else {
 					View::showPostEditor("backup");//show new post screen with the backup data loaded
 				}
+			} else {
+				$GLOBALS["ERROR"] = "No backup file to recover";
+				View::showPosts();
 			}
-			$GLOBALS["ERROR"] = "No backup file to recover";
+			break;
+		case "deletebackup":
+			if(!Database::deleteBackup()) {
+				$GLOBALS["ERROR"] = "Could not delete backup file";
+			}
 			View::showPosts();
 			break;
 		default:

@@ -7,6 +7,48 @@ $(document).ready(function() {
 	});
 });
 		
+function getImageList(off, amo) {
+	//loads amount + 1 to check ahead to see if there are more images to load (so it cant load a blank page);
+	document.getElementById("imageboxtitle").innerHTML = "Choose an image (Page " + ((off / amo) + 1).toString() + ")";
+	$.get( "system/ajax/getimages.php", { offset: off, amount: amo+1},  function( data ) {
+		lastpage = false;
+		newoff = off - amo;
+		if(newoff < 0 ) {
+			newoff = 0;
+		}
+		str2 = '<a class="btn btn-default" onclick="getImageList(' + newoff + ', ' + amo + ')">';
+		str3 = '<<<';
+		str4 = '</a>';
+		document.getElementById("imageboxcontentleft").innerHTML = str2 + str3 + str4;
+		
+		document.getElementById("imageboxcontentcenter").innerHTML = "";
+		for(i=0;i<amo;i++) {
+			if(eval(data)[i] != undefined) {
+				str1 = '<div class="col-xs-6 col-md-2">';
+				str2 = '<a href="#" class="thumbnail" style="height:128px; width:128px;" >';
+				substr2 = "insertAtCaret('postcontent','![alt text](content/images/" + eval(data)[i] + ")');";
+				str3 = '<img src="content/images/' + eval(data)[i] + '" style="max-height:100%; max-width:100%;"  alt="none"; onclick="' + substr2 + '" >';
+				str4 = '</a>';
+				str5 = '</div>';
+				document.getElementById("imageboxcontentcenter").innerHTML += str1 + str2 + str3 + str4 + str5;
+			}
+		}		
+		if(eval(data)[amo] == undefined) {
+			newoff = off;
+		}
+		else {
+			newoff = off + amo;
+		}
+		str2 = '<a class="btn btn-default"  onclick="getImageList(' + newoff + ', ' + amo + ')">';
+		str3 = '>>>';
+		str4 = '</a>';
+		document.getElementById("imageboxcontentright").innerHTML = str2 + str3 + str4;;
+	});
+	document.getElementById('imagebox').style.display = "block";
+}
+function hideImageBox() {
+	document.getElementById('imagebox').style.display = "none";
+}
 function displayError(errormessage) {
 	document.getElementById('errorbox').style.display = "block";
 	document.getElementById('errorboxcontent').innerHTML = errormessage;
@@ -40,7 +82,7 @@ function clickMarkupTab() {
 }
 
 function saveBackup() {
-	$.post( "system/ajax/savebackup.php", { content: $("#postcontent").val(), title: $("#posttitle").val() },  function( data ) {
+	$.post( "system/ajax/savebackup.php", { id:$("#postid").val(), content: $("#postcontent").val(), title: $("#posttitle").val(), tags: $("#posttags").val() },  function( data ) {
 		alert("saved!");
 	});
 }
