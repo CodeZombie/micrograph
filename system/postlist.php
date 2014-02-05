@@ -1,5 +1,5 @@
 <?php
-class tgPostListRequest {
+class PostList {
 	public $tagFilter;
 	public $resultsPerPage;
 	public $currentPage;

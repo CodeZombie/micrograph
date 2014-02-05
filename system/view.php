@@ -2,27 +2,32 @@
 class View {
 
 	public static function showError() {
+		$_DISPLAY = true;
 		if($GLOBALS["ERROR"] != "") {
 			include("/../views/error.php");
 		}
 	}
 	public static function showMessage() {
+		$_DISPLAY = true;
 		if($GLOBALS["MESSAGE"] != "") {
 			include("/../views/message.php");
 		}
 	}
 	public static function showRegister() {
+		$_DISPLAY = true;
 		include("/../views/header.php");
 		include("/../views/register.php");
 		include("/../views/footer.php");
 	}
 	
 	public static function showLogin() {
+		$_DISPLAY = true;
 		include("/../views/header.php");
 		include("/../views/login.php");
 		include("/../views/footer.php");
 	}
 	public static function showImagePage() {
+		$_DISPLAY = true;
 		$active = 2;
 		include("/../views/header.php");
 		include("/../views/navbar.php");
@@ -33,6 +38,7 @@ class View {
 	}
 	
 	public static function showPosts($currentPage = null) {
+		$_DISPLAY = true;
 		$tagFilter = Header::getHeaderGet("tag");
 		
 		if($tagFilter == "") {
@@ -50,7 +56,7 @@ class View {
 		}
 		
 		$order = Header::getHeaderGet("order");
-		$tgplr = new tgPostListRequest($resultsPerPage, $currentPage, $order, $tagFilter);
+		$tgplr = new PostList($resultsPerPage, $currentPage, $order, $tagFilter);
 
 		$active = 0;
 		
@@ -63,6 +69,7 @@ class View {
 	}
 	
 	public static function showNewPost($backup = false) {
+		$_DISPLAY = true;
 		if($backup == true) {
 			$backup = Json::readJsonFile("content/backup.json");
 			$post_content_value = File::readFile("content/markdown/backup.md");
@@ -80,7 +87,7 @@ class View {
 	}
 
 	public static function showPostEditor($id) {
-	
+		$_DISPLAY = true;
 		if($id === "backup") {
 			$post = Json::readJsonFile("content/backup.json");
 			$post_content_value = File::readFile("content/markdown/backup.md");
@@ -91,9 +98,9 @@ class View {
 			$post = Database::readPostById($id);
 			$post_content_value = $post["content"];
 			$post_tags_value = "";
-			foreach($post["tags"] as $tag) {
+			foreach($post["tags"] as $key => $tag) {
 				$post_tags_value = $post_tags_value . $tag;
-				if($post["tags"][count($post["tags"])-1] !== $tag) {
+				if($key !== count($post["tags"])-1) {
 					$post_tags_value = $post_tags_value . ", "; 
 				}
 			}
@@ -112,6 +119,7 @@ class View {
 	}
 	
 	public static function showSettings() {
+		$_DISPLAY = true;
 		$active = 3;
 		include("/../views/header.php");
 		include("/../views/navbar.php");

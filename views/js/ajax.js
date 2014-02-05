@@ -1,14 +1,14 @@
 //AVOID jQuery WHERE POSSIBLE. IT'S SLOW. (vanilla-js.com)
-//FIND A WAY TO MAKE AJAX CALLS W/O JQUERY. MAYBE TRY A LIGHTER-WEIGHT LIBRARY (modify microajax.js?)
-
 $(document).ready(function() {
-	$('#imgupload').ajaxForm(function() {
-		displayMessage("image uploaded succesfully");
+	$('#imgupload').ajaxForm(function(data) {
+		//check if ImageBox is opened, and if it is, refresh the contents
+		displayMessage("image uploaded succesfully" + data);
+		//implement a failure state.
 	});
 });
 		
 function getImageList(off, amo) {
-	//loads amount + 1 to check ahead to see if there are more images to load (so it cant load a blank page);
+	//loads amount + 1 to check ahead to see if there are more images to load (so it doesn't load a blank page);
 	document.getElementById("imageboxtitle").innerHTML = "Choose an image (Page " + ((off / amo) + 1).toString() + ")";
 	$.get( "system/ajax/getimages.php", { offset: off, amount: amo+1},  function( data ) {
 		lastpage = false;

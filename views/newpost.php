@@ -1,3 +1,4 @@
+<?php if(isset($_DISPLAY)) { ?>
 <div class="container">
 	<div class="col-md-12">
 		<div id="errorbox" class="panel panel-danger" style="display:none;">
@@ -93,3 +94,6 @@
 			</div>
 		</div>
 	</div>
+<?php } else { ?>
+403 forbidden
+<?php } ?>

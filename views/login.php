@@ -1,3 +1,4 @@
+<?php if(isset($_DISPLAY)) { ?>
 	<div class="container">
 		<div class="col-md-4 center-block promptbox">
 			<?php View::showError(); ?>
@@ -15,3 +16,6 @@
 			</form>
 		</div>
 	</div>
+<?php } else { ?>
+403 forbidden
+<?php } ?>

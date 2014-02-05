@@ -1,3 +1,4 @@
+<?php if(isset($_DISPLAY)) { ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -18,3 +19,6 @@
 		<link rel="shortcut icon" href="img/favicon.png">
 	</head>
 <body>
+<?php } else { ?>
+403 forbidden
+<?php } ?>

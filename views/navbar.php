@@ -1,3 +1,4 @@
+<?php if(isset($_DISPLAY)) { ?>
 	<div class="navbar navbar-default navbar-static-top navbar-inverse" role="navigation">
 	  <div class="container">
 		<div class="navbar-header">
@@ -21,3 +22,6 @@
 		</div>
 	  </div>
 	</div>
+<?php } else { ?>
+403 forbidden
+<?php } ?>

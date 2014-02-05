@@ -1,3 +1,4 @@
+<?php if(isset($_DISPLAY)) { ?>
 		</div>
 		<script src="views/js/jquery.min.js"></script>
 		<script src="views/js/bootstrap.min.js"></script>
@@ -8,3 +9,6 @@
 		<script src="views/js/ajax.js"></script>
 	</body>
 </html>
+<?php } else { ?>
+403 forbidden
+<?php } ?>

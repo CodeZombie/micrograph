@@ -1,3 +1,4 @@
+<?php if(isset($_DISPLAY)) { //MAKE SURE PEOPLE CAN'T ACCESS THESE FILES FROM OUTSIDE THE ADMIN PANEL ?>
 <div class="container">
 		<div class="col-md-3">
 			<div class="panel panel-default">
@@ -74,8 +75,8 @@
 								<p>
 								<?php echo nl2br($post["content"]); ?>
 								<br/>
-								<?php foreach($post["tags"] as $tag) { ?>
-									<a href="?action=oldposts<?php echo Header::formatHeaderGetList("perpage") ?>&tag=<?php echo $tag; ?>"><?php echo $tag; ?></a><?php if($post["tags"][count($post["tags"])-1] !== $tag) { ?>,<?php } ?>
+								<?php foreach($post["tags"] as $key => $tag) { ?>
+									<a href="?action=oldposts<?php echo Header::formatHeaderGetList("perpage") ?>&tag=<?php echo $tag; ?>"><?php echo $tag; ?></a><?php if($key !== count($post["tags"])-1) { ?>,<?php } ?>
 								<?php } ?>
 								</p>
 							</div>
@@ -127,3 +128,6 @@
 			</div>
 		</div>
 	</div>
+<?php } else { ?>
+403 forbidden
+<?php } ?>

@@ -1,10 +1,16 @@
 <?php
 //Do not include() this file. It is only to be used for on-the-fly ajax requests.
-include ("../header.php");
+session_start();
+if(isset($_SESSION['userid']) && $_SESSION['userid'] === "admin") {
 
-$markdown = Header::getHeaderPost("markdown");
-if($markdown !== "") {
-	include("../parsedown/parsedown.php");
-	echo Parsedown::instance()->parse($markdown);
+	include ("../header.php");
+
+	$markdown = Header::getHeaderPost("markdown");
+	if($markdown !== "") {
+		include("../parsedown.php");
+		echo Parsedown::instance()->parse($markdown);
+	}
+} else {
+echo "403 forbidden";
 }
 ?>

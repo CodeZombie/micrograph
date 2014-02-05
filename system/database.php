@@ -107,8 +107,11 @@ class Database {
 		$exploded_tags = explode(",",$tags);
 		
 		foreach($exploded_tags as $tag) {
+		
 			if(trim($tag) !== "") {
+			
 				array_push($postdata["tags"],strtolower(trim($tag)));
+				
 				self::saveTag(strtolower(trim($tag)),$postcount);
 			}
 		}

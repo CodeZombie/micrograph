@@ -2,8 +2,7 @@
 /*
 TODO:
 	Make tag searching case insensitive
-	Create a Draftdata folder. and handle drafts the same way as posts, but totally isolate them from posts (create a "drafts" tab in the nav)
-	
+	Create a Draftdata folder. and handle drafts the same way as posts, but totally isolate them from posts (create a "drafts" tab in the nav)	
 */
 DEFINE("SESSION_TIMEOUT_TIME",14400);
 
@@ -17,7 +16,7 @@ include('system/posts.php');
 include('system/database.php');
 include('system/file.php');
 include('system/images.php');
-include('system/exposed/tgpostlistrequest.php');
+include('system/postlist.php');
 
 $GLOBALS["ERROR"] = "";
 $GLOBALS["MESSAGE"] = "";

@@ -19,9 +19,18 @@ class Images {
 				if ($size > 1000*1024) {
 					$GLOBALS["ERROR"] = "File too large";
 					return false;
-				}					
-				$image_name = substr($filename, 0, strrpos($filename, ".")) . '-' . time() . '.' . $extension;
+				}
+				$time = time();
+				$image_name = $time . '-' . substr($filename, 0, strrpos($filename, ".")) . '.' . $extension;
 				$newname = "content/images/" . $image_name;
+				
+				$offset = 1;
+				while(File::fileExists($newname)) {
+					$image_name = $time . '-' . substr($filename, 0, strrpos($filename, ".")) . '-' . $offset . '.' . $extension;
+					$newname = "content/images/" . $image_name;
+					$offset++;
+				}
+				
 				$copied = File::copyFile($fileHandle['tmp_name'], $newname);
 				if (!$copied) {
 					$GLOBALS["ERROR"] = "Image could not be saved.";
@@ -36,6 +45,7 @@ class Images {
 	
 	public static function getImageList($offset, $amount) {
 		$images = File::getFilesInDirectory("content/images/");
+		$images = array_reverse($images);
 		$output = array();
 		for($i=$offset;$i<$offset+$amount;$i++) {
 			if(isset($images[$i])) {

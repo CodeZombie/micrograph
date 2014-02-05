@@ -16,5 +16,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] === "admin") {
 	//if a postid is present, and the user clicks recover, they will be transported to the editpost screen.
 	//if a postid is not present, the user is transported to the newpost screen, with the backup data already filled in.
 	Database::saveBackup(Header::getHeaderPost("id"), Header::getHeaderPost("title"), Header::getHeaderPost("content"), Header::getHeaderPost("tags"));
+} else {
+	echo "403 forbidden";
 }
 ?>

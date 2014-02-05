@@ -5,5 +5,5 @@ include($GLOBALS["directory"]. '/system/posts.php');
 include($GLOBALS["directory"] . '/system/database.php');
 include($GLOBALS["directory"] . '/system/file.php');
 
-include($GLOBALS["directory"] . '/system/exposed/tgpostlistrequest.php');
+include($GLOBALS["directory"] . '/system/postlist.php');
 ?>

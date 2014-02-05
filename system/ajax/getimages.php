@@ -16,4 +16,6 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] === "admin") {
 	
 	$result = json_encode(Images::getImageList($offset,$amount));
 	echo $result;
+} else {
+echo "403 forbidden";
 }

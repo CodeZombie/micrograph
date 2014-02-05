@@ -1,3 +1,4 @@
+<?php if(isset($_DISPLAY)) { ?>
 <div class="container">
 		<div class="col-md-3">
 			<div class="panel panel-default">
@@ -33,3 +34,6 @@
 			</div>
 		</div>
 	</div>
+<?php } else { ?>
+403 forbidden
+<?php } ?>
