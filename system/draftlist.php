@@ -1,6 +1,5 @@
 <?php
-class PostList {
-	public $tagFilter;
+class DraftList {
 	public $resultsPerPage;
 	public $currentPage;
 	public $maximumPosts;
@@ -9,15 +8,10 @@ class PostList {
 	public $posts = array();
 	public $pagination;
 	
-	public function __construct($resultsPerPage, $currentPage, $order = "asc", $tagfilter = false) {
-		if($tagfilter !== false) {
-			$tagfilter = strtolower($tagfilter);
-		}
-
+	public function __construct($resultsPerPage, $currentPage, $order = "asc") {
 		$this->resultsPerPage = $resultsPerPage;
 		$this->currentPage = $currentPage;
 		$this->order = $order;
-		$this->tagFilter = $tagfilter;
 
 		if($this->resultsPerPage<=0) {
 			$this->resultsPerPage = 1;
@@ -29,7 +23,7 @@ class PostList {
 			}
 		}
 		
-		$this->maximumPosts = Database::getNumberOfPosts($tagfilter);
+		$this->maximumPosts = Database::getNumberOfDrafts();
 		$this->maximumPages = floor($this->maximumPosts / $this->resultsPerPage);
 		
 		if($this->maximumPosts % $this->resultsPerPage !=0) {
@@ -55,7 +49,7 @@ class PostList {
 		for($i=1;$i<$this->resultsPerPage+1;$i++) {
 			if($i+ $offset <= $this->maximumPosts) {
 				$x = array();
-				$x = Database::readPostByIndex($i + $offset, $this->order, $this->tagFilter);
+				$x = Database::readDraftByIndex($i + $offset, $this->order);
 				array_push($this->posts, $x);
 				unset($x);
 			}

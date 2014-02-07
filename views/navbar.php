@@ -11,9 +11,10 @@
 		</div>
 		<div class="navbar-collapse collapse">
 		  <ul class="nav navbar-nav">
-					<li<?php if($active==0){ ?> class="active" <?php } ?>><a href="<?php $_SERVER['SCRIPT_NAME'] ?>?action=posts"><span class="glyphicon glyphicon-th-large"></span> Posts</a></li>
-					<li<?php if($active==1){ ?> class="active" <?php } ?>><a href="<?php $_SERVER['SCRIPT_NAME'] ?>?action=newpost"><span class="glyphicon glyphicon-plus"></span> New Post</a></li>
-					<li<?php if($active==2){ ?> class="active" <?php } ?>><a href="<?php $_SERVER['SCRIPT_NAME'] ?>?action=images"><span class="glyphicon glyphicon-paperclip"></span> Images</a></li>
+					<li<?php if($active==4){ ?> class="active" <?php } ?>><a href="<?php $_SERVER['SCRIPT_NAME'] ?>?action=drafts"><span class="glyphicon glyphicon-leaf"></span> Drafts</a></li>
+					<li<?php if($active==0){ ?> class="active" <?php } ?>><a href="<?php $_SERVER['SCRIPT_NAME'] ?>?action=posts"><span class="glyphicon glyphicon-fire"></span> Posts</a></li>
+					<li<?php if($active==1){ ?> class="active" <?php } ?>><a href="<?php $_SERVER['SCRIPT_NAME'] ?>?action=newpost"><span class="glyphicon glyphicon-pencil"></span> New Post</a></li>
+					<li<?php if($active==2){ ?> class="active" <?php } ?>><a href="<?php $_SERVER['SCRIPT_NAME'] ?>?action=images"><span class="glyphicon glyphicon-picture"></span> Images</a></li>
 		  </ul>
 		  <ul class="nav navbar-nav navbar-right">
 			<li<?php if($active==3){ ?> class="active" <?php } ?>><a href="<?php $_SERVER['SCRIPT_NAME'] ?>?action=settings"><span class="glyphicon glyphicon-wrench"></span> Settings</a></li>

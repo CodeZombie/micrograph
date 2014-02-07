@@ -81,8 +81,8 @@
 							</div>
 							<div class="panel panel-default no-border-top-radius panel-under-tag-field">
 								<div class="btn-group">
-									<input class="btn btn-primary" style="height:34px;" value="Save Changes" type="submit">
-									<a class="btn btn-info" onclick="saveBackup()">Save temp backup</a>
+									<input class="btn btn-primary" style="height:34px;" name="publishbutton" value="Publish changes" type="submit">
+									<input class="btn btn-warning" style="height:34px;" name="draftbutton" value="Save and unpublish" type="submit">
 									<a class="btn btn-danger" href="<?php $_SERVER['SCRIPT_NAME'] ?>?action=deletepost&id=<?php echo $id; ?>">Delete Post</a>
 								</div>
 							</div>

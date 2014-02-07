@@ -69,6 +69,7 @@ class File {
 				unset($results[$key]);
 			}
 		}
+
 		$results= array_values($results);
 		if($order == "asc") {
 			return $results;
@@ -92,6 +93,6 @@ class File {
 	public static function getNumberOfFilesInDirectory($directory) {
 		$location = isset($GLOBALS["directory"]) ? $GLOBALS["directory"] : "";
 		$directory = $location . $directory;
-		return count(self::getFilesInDirectory($directory));
+		return count(self::getFilesInDirectory($directory, "asc"));
 	}
 }

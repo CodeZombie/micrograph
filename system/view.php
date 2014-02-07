@@ -36,9 +36,34 @@ class View {
 		include("/../views/imagepages.php");
 		include("/../views/footer.php");
 	}
-	
+	public static function showDrafts($currentPage = null) {
+		$_DISPLAY = true;
+		
+		$resultsPerPage = Header::getHeaderGet("perpage");
+
+		if($currentPage===null) {
+			$currentPage = Header::getHeaderGet("page");
+		}
+		
+		if($resultsPerPage!=2 && $resultsPerPage!=5 && $resultsPerPage!=10 && $resultsPerPage!=15) {
+			$resultsPerPage=5;
+		}
+		
+		$order = Header::getHeaderGet("order");
+		$tgplr = new DraftList($resultsPerPage, $currentPage, $order);// DraftList
+
+		$active = 4;
+		
+		include("/../views/header.php");
+		include("/../views/navbar.php");
+		self::showError();
+		self::showMessage();
+		include("/../views/draftlist.php");
+		include("/../views/footer.php");
+	}
 	public static function showPosts($currentPage = null) {
 		$_DISPLAY = true;
+		
 		$tagFilter = Header::getHeaderGet("tag");
 		
 		if($tagFilter == "") {
@@ -115,6 +140,31 @@ class View {
 		self::showError();
 		self::showMessage();
 		include("/../views/posteditor.php");
+		include("/../views/footer.php");
+	}
+	
+	public static function showDraftEditor($id) {
+		$_DISPLAY = true;
+		if($id === "backup") {
+			$post = Json::readJsonFile("content/backup.json");
+			$post_content_value = File::readFile("content/markdown/backup.md");
+			$id = $post["id"];
+			$post_tags_value = $post["tags"];
+		}
+		else {
+			$post = Database::readDraftById($id);
+			$post_content_value = $post["content"];
+			$post_tags_value = $post["tags"];
+		}
+
+		$post_title_value = $post["title"];
+		
+		$active = -1;
+		include("/../views/header.php");
+		include("/../views/navbar.php");
+		self::showError();
+		self::showMessage();
+		include("/../views/drafteditor.php");
 		include("/../views/footer.php");
 	}
 	
