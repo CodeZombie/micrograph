@@ -29,7 +29,7 @@ class PostList {
 			}
 		}
 		
-		$this->maximumPosts = Database::getNumberOfPosts($tagfilter);
+		$this->maximumPosts = Database::getNumberOfPosts(false, $tagfilter);
 		$this->maximumPages = floor($this->maximumPosts / $this->resultsPerPage);
 		
 		if($this->maximumPosts % $this->resultsPerPage !=0) {
@@ -55,7 +55,7 @@ class PostList {
 		for($i=1;$i<$this->resultsPerPage+1;$i++) {
 			if($i+ $offset <= $this->maximumPosts) {
 				$x = array();
-				$x = Database::readPostByIndex($i + $offset, $this->order, $this->tagFilter);
+				$x = Database::readPostByIndex(false, $i + $offset, $this->order, $this->tagFilter);
 				array_push($this->posts, $x);
 				unset($x);
 			}

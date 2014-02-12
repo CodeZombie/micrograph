@@ -1,6 +1,5 @@
 <?php
 class paginateButton {
-
 	public $active = false;
 	public $pagenumber = 0;
 	public $disabled = false;
@@ -39,9 +38,8 @@ function getPaginateArray($currentPage, $objectsPerPage, $maxObjects) {
 			$currentPage=1;
 		}
 	}
+	
 	$maxPages = floor($maxObjects/$objectsPerPage);
-	
-	
 	
 	if($maxObjects%$objectsPerPage!=0) {
 		$maxPages+= 1;

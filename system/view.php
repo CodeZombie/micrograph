@@ -28,6 +28,12 @@ class View {
 	}
 	public static function showImagePage() {
 		$_DISPLAY = true;
+		$page = Header::getHeaderGet("page");
+		if($page<=0 || !isset($page)){
+			$page = 1;
+		}
+		$perpage = 16;
+		$pagin = getPaginateArray($page,$perpage,File::getNumberOfFilesInDirectory("content/images/"));
 		$active = 2;
 		include("/../views/header.php");
 		include("/../views/navbar.php");
@@ -95,6 +101,7 @@ class View {
 	
 	public static function showNewPost($backup = false) {
 		$_DISPLAY = true;
+		$pagetitle = "New Post";
 		if($backup == true) {
 			$backup = Json::readJsonFile("content/backup.json");
 			$post_content_value = File::readFile("content/markdown/backup.md");
@@ -102,17 +109,22 @@ class View {
 			$post_tags_value = $backup["tags"];
 		}
 		
+		$button_red_href = '';
+		$form_action = "?action=savepost";
+		
 		$active = 1;
 		include("/../views/header.php");
 		include("/../views/navbar.php");
 		self::showError();
 		self::showMessage();
-		include("/../views/newpost.php");
+		include("/../views/editor.php");
 		include("/../views/footer.php");
 	}
 
 	public static function showPostEditor($id) {
 		$_DISPLAY = true;
+		$pagetitle = "Edit Post";
+		
 		if($id === "backup") {
 			$post = Json::readJsonFile("content/backup.json");
 			$post_content_value = File::readFile("content/markdown/backup.md");
@@ -120,7 +132,7 @@ class View {
 			$post_tags_value = $post["tags"];
 		}
 		else {
-			$post = Database::readPostById($id);
+			$post = Database::readPostById(false, $id);
 			$post_content_value = $post["content"];
 			$post_tags_value = "";
 			foreach($post["tags"] as $key => $tag) {
@@ -132,14 +144,15 @@ class View {
 		}
 		
 		$post_title_value = $post["title"];
-
+		$form_action = "?action=savepostedit&id=" . $id;
+		$button_red_href = "?action=deletepost&id=" . $id;
 		
 		$active = -1;
 		include("/../views/header.php");
 		include("/../views/navbar.php");
 		self::showError();
 		self::showMessage();
-		include("/../views/posteditor.php");
+		include("/../views/editor.php");
 		include("/../views/footer.php");
 	}
 	
@@ -152,19 +165,23 @@ class View {
 			$post_tags_value = $post["tags"];
 		}
 		else {
-			$post = Database::readDraftById($id);
+			$post = Database::readPostById(true, $id);
 			$post_content_value = $post["content"];
 			$post_tags_value = $post["tags"];
 		}
 
 		$post_title_value = $post["title"];
 		
+		$pagetitle = "Edit Draft";
+		$form_action = "?action=savedraftedit&id=" . $id;
+		$button_red_href = "?action=deletedraft&id=" . $id;
+		
 		$active = -1;
 		include("/../views/header.php");
 		include("/../views/navbar.php");
 		self::showError();
 		self::showMessage();
-		include("/../views/drafteditor.php");
+		include("/../views/editor.php");
 		include("/../views/footer.php");
 	}
 	

@@ -23,7 +23,7 @@ class DraftList {
 			}
 		}
 		
-		$this->maximumPosts = Database::getNumberOfDrafts();
+		$this->maximumPosts = Database::getNumberOfPosts(true);
 		$this->maximumPages = floor($this->maximumPosts / $this->resultsPerPage);
 		
 		if($this->maximumPosts % $this->resultsPerPage !=0) {
@@ -49,7 +49,7 @@ class DraftList {
 		for($i=1;$i<$this->resultsPerPage+1;$i++) {
 			if($i+ $offset <= $this->maximumPosts) {
 				$x = array();
-				$x = Database::readDraftByIndex($i + $offset, $this->order);
+				$x = Database::readPostByIndex(true, $i + $offset, $this->order);
 				array_push($this->posts, $x);
 				unset($x);
 			}

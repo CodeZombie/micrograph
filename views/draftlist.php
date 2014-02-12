@@ -112,7 +112,6 @@
 							$out .= '</a></li>';
 							echo $out;
 						} ?>
-						
 					</ul>
 				</div>
 			</div>

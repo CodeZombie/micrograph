@@ -1,10 +1,8 @@
 <?php
 /*
 TODO:
-	Image page pagination
-	Organize the code in a more obvious way
-	Refactor redundant code (especially in the views (why are there 3 similar post editor views) and in the post/draft database functionality)
-		+ consolidate Post and Draft functionality into a single base
+	Ability to delete images
+	Consolidate draftlist and postlist.
 	Automatically save backups of posts & drafts while editing
 		+ When you type a character in the content box, a timer starts counting down.
 		+ If it counts down to 0 from 15 seconds, save a backup.
@@ -13,7 +11,7 @@ TODO:
 		+ Button to download entire blog archive as a zip
 	API calls
 	Fix in-editor image uploading
-	
+	Log login attempts and block IP after 10 tries for an hour.
 */
 DEFINE("SESSION_TIMEOUT_TIME",14400);
 
@@ -46,9 +44,9 @@ foreach($requiredFolder as $folder) {
 function goHome($priority = "post") {
 
 	if($priority == "draft") {
-		if(Database::getNumberOfDrafts() === 0 ) {
+		if(Database::getNumberOfPosts(true) === 0 ) {
 			$GLOBALS["ERROR"] = "No drafts to show";
-			if(Database::getNumberOfPosts() === 0 ) {
+			if(Database::getNumberOfPosts(false) === 0 ) {
 				View::showNewPost();
 				return true;
 			}
@@ -63,9 +61,9 @@ function goHome($priority = "post") {
 		}
 	}
 	if($priority == "post") {
-		if(Database::getNumberOfPosts() === 0 ) {
+		if(Database::getNumberOfPosts(false) === 0 ) {
 			$GLOBALS["ERROR"] = "No posts to show";
-			if(Database::getNumberOfDrafts() === 0 ) {
+			if(Database::getNumberOfPosts(true) === 0 ) {
 				View::showNewPost();
 				return true;
 			}
@@ -88,20 +86,25 @@ if(User::isLoggedIn()) {
 			User::logout();
 			View::showLogin();
 			break;
+			
 		case "posts":
 			goHome();
 			break;
+			
 		case "drafts":
 			goHome("draft");
-		break;
+			break;
+			
 		case "newpost":
 			View::showNewPost();
 			break;
+			
 		case "images":
 			View::showImagePage();
 			break;
+			
 		case "editdraft":
-			if(!Database::draftExistsById(Header::getHeaderGet('id'))) {
+			if(!Database::postExistsById(true, Header::getHeaderGet('id'))) {
 				$GLOBALS["ERROR"] = "Draft does not exist";
 				View::showDrafts();
 			}
@@ -109,8 +112,9 @@ if(User::isLoggedIn()) {
 				View::showDraftEditor(Header::getHeaderGet('id'));
 			}
 			break;
+			
 		case "editpost":
-			if(!Database::postExistsById(Header::getHeaderGet('id'))) {
+			if(!Database::postExistsById(false, Header::getHeaderGet('id'))) {
 				$GLOBALS["ERROR"] = "Post does not exist";
 				View::showPosts();
 			}
@@ -118,10 +122,11 @@ if(User::isLoggedIn()) {
 				View::showPostEditor(Header::getHeaderGet('id'));
 			}
 			break;
+			
 		case "savepost":
 			Database::saveBackup(false, Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'));
 			if(Header::getHeaderPost('publishbutton')!==false) {
-				if(Database::savePost(Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'))) {
+				if(Database::savePost(false, Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'))) {
 					Database::deleteBackup();
 					View::showPosts("last");
 				}
@@ -131,7 +136,7 @@ if(User::isLoggedIn()) {
 				}
 			}
 			elseif(Header::getHeaderPost('draftbutton')!==false) {
-				if(Database::saveDraft(Header::getHeaderPost('post_title'),Header::getHeaderPost('post_content'),Header::getHeaderPost('post_tags'))) {
+				if(Database::savePost(true, Header::getHeaderPost('post_title'),Header::getHeaderPost('post_content'),Header::getHeaderPost('post_tags'))) {
 					Database::deleteBackup();
 					View::showDrafts("last");
 				} 
@@ -143,21 +148,21 @@ if(User::isLoggedIn()) {
 				View::showNewPost(true);
 			}
 			break;
+			
 		case "savedraftedit":
 			Database::saveBackup(Header::getHeaderGet('id'), Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'));
 			if(Header::getHeaderPost('publishbutton')!==false) {
-				if(Database::savePost(Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'))) {
+				if(Database::savePost(false, Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'))) {
 					Database::deleteBackup();
-					Database::deleteDraft(Header::getHeaderGet('id'));
+					Database::deletePost(true, Header::getHeaderGet('id'));
 					View::showPosts("last");
 				}
 				else {
-					//view NewPost screen, but show backed up data in the fields
 					View::showNewPost(true);
 				}
 			}
 			elseif(Header::getHeaderPost('draftbutton')!==false) {
-				if(Database::saveDraft(Header::getHeaderPost('post_title'),Header::getHeaderPost('post_content'),Header::getHeaderPost('post_tags'), Header::getHeaderGet('id'))) {
+				if(Database::savePost(true, Header::getHeaderPost('post_title'),Header::getHeaderPost('post_content'),Header::getHeaderPost('post_tags'), Header::getHeaderGet('id'))) {
 					Database::deleteBackup();
 					View::showDrafts("last");
 				} 
@@ -169,10 +174,11 @@ if(User::isLoggedIn()) {
 				View::showNewPost(true);
 			}
 			break;
+			
 		case "savepostedit":
 			Database::saveBackup(Header::getHeaderGet('id'), Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'));
 			if(Header::getHeaderPost('publishbutton')!==false) {
-				if(Database::savePost(Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'),"published",false,Header::getHeaderGet('id'))) {
+				if(Database::savePost(false, Header::getHeaderPost('post_title'), Header::getHeaderPost('post_content'), Header::getHeaderPost('post_tags'),Header::getHeaderGet('id'))) {
 					Database::deleteBackup();
 					View::showPosts();
 				}
@@ -181,8 +187,8 @@ if(User::isLoggedIn()) {
 				}
 			}
 			elseif(Header::getHeaderPost('draftbutton')!==false) {
-				if(Database::saveDraft(Header::getHeaderPost('post_title'),Header::getHeaderPost('post_content'),Header::getHeaderPost('post_tags'))) {
-					Database::deletePost(Header::getHeaderGet('id'));
+				if(Database::savePost(true, Header::getHeaderPost('post_title'),Header::getHeaderPost('post_content'),Header::getHeaderPost('post_tags'))) {
+					Database::deletePost(false,Header::getHeaderGet('id'));
 					Database::deleteBackup();
 					View::showDrafts("last");
 				} 
@@ -194,24 +200,27 @@ if(User::isLoggedIn()) {
 				View::showPostEditor("backup");
 			}
 			break;
+			
 		case "deletedraft":
-			if(!Database::draftExistsById(Header::getHeaderGet('id'))) {
+			if(!Database::postExistsById(true, Header::getHeaderGet('id'))) {
 				$GLOBALS["ERROR"] = "Draft does not exist";
 			}
 			else {
-				Database::deleteDraft(Header::getHeaderGet('id'));
+				Database::deletePost(true, Header::getHeaderGet('id'));
 			}
 			goHome("draft");
 			break;
+			
 		case "deletepost":
-			if(!Database::postExistsById(Header::getHeaderGet('id'))) {
+			if(!Database::postExistsById(false, Header::getHeaderGet('id'))) {
 				$GLOBALS["ERROR"] = "Post does not exist";
 			}
 			else {
-				Database::deletePost(Header::getHeaderGet('id'));
+				Database::deletePost(false, Header::getHeaderGet('id'));
 			}
 			goHome();
 			break;
+			
 		case "uploadimage":
 			Images::uploadImage($_FILES['image']);
 			View::showImagePage();
@@ -229,12 +238,14 @@ if(User::isLoggedIn()) {
 				View::showPosts();
 			}
 			break;
+			
 		case "deletebackup":
 			if(!Database::deleteBackup()) {
 				$GLOBALS["ERROR"] = "Could not delete backup file";
 			}
 			View::showPosts();
 			break;
+			
 		default:
 			goHome();
 			break;

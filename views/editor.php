@@ -63,28 +63,28 @@
 		<div class="col-md-9">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">New Post</h3>
+					<h3 class="panel-title"><?php echo $pagetitle ?></h3>
 				</div>
 				<div class="panel-body">
-					<form method="post" action="<?php $_SERVER['SCRIPT_NAME'] ?>?action=savepost">
+					<form method="post" action="<?php echo $_SERVER['SCRIPT_NAME'] . $form_action ?>">
 						<div class="panel no-border">
-							<input name="post_title" id="posttitle" type="text" class="form-control title_field" placeholder="Post Title" <?php if($backup==true){echo 'value="' . $post_title_value . '"';} ?>>
+							<input name="post_title" id="posttitle" type="text" class="form-control title_field" placeholder="Post Title" <?php if(isset($post_title_value)){echo 'value="' . $post_title_value . '"';} ?>>
 						</div>
 						<fieldset>	
 							<ul class="nav nav-tabs">
 								<li class="active" id="markuptab"><a onclick="clickMarkupTab()">markup</a></li>
-								<li id="previewtab"><a onclick="clickPreviewTab();" >preview</a></li>
+								<li id="previewtab"><a onclick="clickPreviewTab();">preview</a></li>
 							</ul>
 							<div id="previewcontent" class="content_field preview_field" style="display:none;"></div>
-							<textarea name="post_content" id="postcontent" type="text" class="form-control no-border-radius content_field" placeholder="Post Content" ><?php if($backup==true){echo $post_content_value;} ?></textarea>
+							<textarea name="post_content" id="postcontent" type="text" class="form-control no-border-radius content_field" placeholder="Post Content" ><?php if(isset($post_content_value)){echo $post_content_value;} ?></textarea>
 							<div class="panel panel-default no-border-radius panel-under-content-field">
-								<input id="posttags" name="post_tags" type="text" class="form-control" placeholder="Tags, Seperated, By, Commas" <?php if($backup==true){echo 'value="' . $post_tags_value . '"';} ?>>
+								<input id="posttags" name="post_tags" type="text" class="form-control" placeholder="Tags, Seperated, By, Commas" <?php if(isset($post_tags_value)){echo 'value="' . $post_tags_value . '"';} ?>>
 							</div>
 							<div class="panel panel-default no-border-top-radius panel-under-tag-field">
 								<div class="btn-group">
 									<input class="btn btn-primary" style="height:34px;" name="publishbutton" value="Publish" type="submit">
 									<input class="btn btn-warning" style="height:34px;" name="draftbutton" value="Save as draft" type="submit">
-									<a class="btn btn-danger" >Discard</a>
+									<a class="btn btn-danger" href="<?php echo $_SERVER['SCRIPT_NAME'] .  $button_red_href; ?>">Discard</a>
 								</div>
 							</div>
 						</fieldset>
