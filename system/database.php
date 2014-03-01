@@ -33,6 +33,10 @@ class Database {
 		$outputdata["id"] = $postdata["id"];
 		$outputdata["title"] = $postdata["title"];
 		$outputdata["tags"] = $postdata["tags"];
+		$outputdata["post_time"] = $postdata["post_time"];
+		if(isset($postdata["last_update_time"])) {
+			$outputdata["last_update_time"] = $postdata["last_update_time"];
+		}
 		
 		$outputdata["content"] = File::readFile($mdpath . $id . ".md");
 		
@@ -58,7 +62,7 @@ class Database {
 				if(array_key_exists($tagfilter,$tagarray)) {
 					$tagarray = $tagarray[$tagfilter];
 					if($order === "asc") {
-						return self::readPostById($tagarray[$index-1]);
+						return self::readPostById(false, $tagarray[$index-1]);
 					}
 					else {
 						return self::readPostById(array_reverse($tagarray)[$index-1]);
@@ -127,6 +131,14 @@ class Database {
 			$postcount = $id;
 		}
 		
+		if($id !== false) {
+			$postdata["last_update_time"] = date('D, M j Y \a\t g:ia');
+			$postdata["post_time"] = self::readPostById($draft,$id)['post_time'];
+		}
+		else {
+			$postdata["post_time"] = date('D, M j Y \a\t g:ia');
+		}
+		
 		if(!$draft) {
 			if($id !== false) {
 				$tagdata = Json::readJsonFile("content/tags.json");
@@ -145,6 +157,7 @@ class Database {
 		$postdatafilename = $datapath . str_pad($postcount,5,"0",STR_PAD_LEFT) . ".json";
 		$postdata["id"] = $postcount;
 		$postdata["title"] = $title;
+		
 		
 		if(!$draft) {
 			$postdata["tags"] = array();

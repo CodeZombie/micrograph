@@ -6,7 +6,7 @@
 		<script src="views/js/mousetrap.min.js"></script>
 		<script src="views/js/mousetrap.global.min.js"></script>
 		<script src="views/js/jquery.form.js"></script> 
-		<script src="views/js/ajax.js"></script>
+		<script src="views/js/javascript.js"></script>
 	</body>
 </html>
 <?php } else { ?>

@@ -22,15 +22,17 @@
 					<div class="col-md-12">
 					<?php if(Images::getImageList(($page-1)*$perpage,$perpage) == null) { ?>
 						nothing to show
-					<?php } ?>
+					<?php } $imgcounter = 0; ?>
 					<?php foreach( Images::getImageList(($page-1)*$perpage,$perpage) as $img) { ?>
-							<div class="col-xs-6 col-md-3">
-								<a href="#" class="thumbnail">
+							<div class="col-xs-6 col-md-3" id="imagecontainer_<?php echo $imgcounter; ?>">
+								<a onclick="askDeleteImage('<?php echo $img; ?>',<?php echo $imgcounter; ?>);" class="thumbnail">
 									<img src="<?php echo "content/images/" . $img; ?>" style="height:128px; width:128px;"  alt="...">
 								</a>
 							</div>
-					<?php } ?>
+					<?php $imgcounter++; } ?>
 					</div>
+				</div>
+				<div class="panel-body">
 					<div class="col-md-12">
 						<ul class="pagination floatright">
 						<?php foreach($pagin as $pag) {

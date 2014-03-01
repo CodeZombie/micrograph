@@ -1,16 +1,10 @@
 <?php
 /*
 TODO:
-	Ability to delete images
-	Consolidate draftlist and postlist.
-	Automatically save backups of posts & drafts while editing
-		+ When you type a character in the content box, a timer starts counting down.
-		+ If it counts down to 0 from 15 seconds, save a backup.
 	Settings page
 		+ Option to change username/password
 		+ Button to download entire blog archive as a zip
 	API calls
-	Fix in-editor image uploading
 	Log login attempts and block IP after 10 tries for an hour.
 */
 DEFINE("SESSION_TIMEOUT_TIME",14400);

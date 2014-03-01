@@ -3,8 +3,9 @@
 	<div class="col-md-12">
 		<div id="errorbox" class="panel panel-danger" style="display:none;">
 			<div class="panel-heading">Error</div>
-			<div id="errorboxcontent" class="panel-body">
-			
+			<div class="panel-body">
+				<div id="errorboxcontent" style="float:left;"></div>
+				<input onclick="hideErrorBox();" class="btn btn-danger floatright" value="Okay" type="submit" >
 			</div>
 		</div>
 		<div id="messagebox" class="panel panel-primary" style="display:none;">
@@ -34,15 +35,6 @@
 		<div class="col-md-3">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">Panel</h3>
-				</div>
-				<h5 class="form-subgroup">Meta</h5>
-				<div class="panel-body">
-					<a class="btn btn-default fullwidth" href="">Choose Thumbnail</a>
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">
 					<h3 class="panel-title">Images</h3>
 				</div>
 				
@@ -70,6 +62,11 @@
 						<div class="panel no-border">
 							<input name="post_title" id="posttitle" type="text" class="form-control title_field" placeholder="Post Title" <?php if(isset($post_title_value)){echo 'value="' . $post_title_value . '"';} ?>>
 						</div>
+						<?php if(isset($post_original_time)) { ?>
+						<div class="panel no-border" style="font-size:.8em;">
+						originally posted: <em><?php echo $post_original_time; ?>.</em> <?php if(isset($post_update_time)) { ?></br> Last updated: <em><?php echo $post_update_time; ?>.</em><?php } ?>
+						</div>
+						<?php } ?>
 						<fieldset>	
 							<ul class="nav nav-tabs">
 								<li class="active" id="markuptab"><a onclick="clickMarkupTab()">markup</a></li>

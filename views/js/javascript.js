@@ -1,8 +1,23 @@
 //AVOID jQuery WHERE POSSIBLE. IT'S SLOW. (vanilla-js.com)
+
+setInterval ( "savePostBackup()", 10000 ); //every ten seconds
+last_content = "";
+function savePostBackup() {
+	if($("#postcontent").val() != last_content) {
+		saveBackup();
+	}
+	last_content = $("#postcontent").val();
+}
+
 $(document).ready(function() {
 	$('#imgupload').ajaxForm(function(data) {
 		//check if ImageBox is opened, and if it is, refresh the contents
-		displayMessage("image uploaded succesfully" + data);
+		if(data == "1") {
+			displayMessage("image uploaded succesfully");
+		}
+		else {
+			displayError("Image failed to upload");
+		}
 		//implement a failure state.
 	});
 });
@@ -46,6 +61,7 @@ function getImageList(off, amo) {
 	});
 	document.getElementById('imagebox').style.display = "block";
 }
+
 function hideImageBox() {
 	document.getElementById('imagebox').style.display = "none";
 }
@@ -62,6 +78,9 @@ function displayMessage(message) {
 }
 function hideMessageBox() {
 	document.getElementById('messagebox').style.display = "none";
+}
+function hideErrorBox() {
+	document.getElementById('errorbox').style.display = "none";
 }
 
 function clickPreviewTab() {
@@ -83,7 +102,6 @@ function clickMarkupTab() {
 
 function saveBackup() {
 	$.post( "system/ajax/savebackup.php", { id:$("#postid").val(), content: $("#postcontent").val(), title: $("#posttitle").val(), tags: $("#posttags").val() },  function( data ) {
-		alert("saved!");
 	});
 }
 
@@ -100,11 +118,30 @@ function nl2br(text){
 	return unescape( text.replace(re_nlchar,'<br />') );
 }
 
-Mousetrap.bindGlobal('ctrl+s', function(e) {
-    bootbox.alert('Draft saved. (not really)');
-	return false;
-});
-
+function askDeleteImage(img, id) {
+	console.log(id);
+	bootbox.dialog({
+		message: "Delete image <em>" + img.toString() + "</em>?",
+		title: "Confirm delete",
+		buttons: {
+			main: {
+				label: "Cancel",
+				className: "btn-default"
+			},
+			danger: {
+				label: "Delete",
+				className: "btn-danger",
+				callback: function() {
+					$.post( "system/ajax/deleteimage.php", { image: img},  function( data ) {
+						if(data == 1) {
+							document.getElementById('imagecontainer_'+id).style.display = "none";
+						}
+					});
+				}
+			}
+		}
+	});
+}
 function insertAtCaret(areaId,text) {
     var txtarea = document.getElementById(areaId);
     var scrollPos = txtarea.scrollTop;

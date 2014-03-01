@@ -143,6 +143,12 @@ class View {
 			}
 		}
 		
+		$post_original_time = $post["post_time"];
+		
+		if(isset($post["last_update_time"])) {
+			$post_update_time = $post["last_update_time"];
+		}
+		
 		$post_title_value = $post["title"];
 		$form_action = "?action=savepostedit&id=" . $id;
 		$button_red_href = "?action=deletepost&id=" . $id;
@@ -169,7 +175,13 @@ class View {
 			$post_content_value = $post["content"];
 			$post_tags_value = $post["tags"];
 		}
-
+		
+		$post_original_time = $post["post_time"];
+		
+		if(isset($post["last_update_time"])) {
+			$post_update_time = $post["last_update_time"];
+		}
+		
 		$post_title_value = $post["title"];
 		
 		$pagetitle = "Edit Draft";
