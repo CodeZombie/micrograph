@@ -814,7 +814,11 @@ class Parsedown
 
 						if ($element['!'])
 						{
+							//check if the path is a hyperlink (contains a '//') or not
+							$rel_location = "";
+							if(strpos($element['»'],'//') === false) {
 							$rel_location = isset($GLOBALS["directory"]) ? $GLOBALS["directory"] : "";
+							}
 							$markup .= '<img alt="'.$element['a'].'" src="' .$rel_location . $element['»'].'" />';
 						}
 						else
