@@ -23,6 +23,15 @@ class File {
 			fclose($handle);
 		}
 	}
+	public static function createFolderIfNotExist($folder) {
+		$location = isset($GLOBALS["directory"]) ? $GLOBALS["directory"] : "";
+		$filename = $location . $folder;
+		if(!file_exists($filename)) {
+			mkdir($filename, 0755);
+			return true;	
+		}
+		return false;
+	}
 	public static function saveFile($filename, $content) {
 		$location = isset($GLOBALS["directory"]) ? $GLOBALS["directory"] : "";
 		$filename = $location . $filename;

@@ -62,7 +62,7 @@
 									<a href="?action=editdraft&id=<?php echo $post["id"]; ?>"><?php echo $post["title"]; ?></a>
 								</h4>
 								<p>
-								<?php echo nl2br($post["content"]); ?>
+								<?php echo substr(nl2br(strip_tags($post["content"])),0,256); ?>
 								<br/>
 								<?php if($post["tags"] !== "") { ?>
 									<br/>

@@ -9,7 +9,7 @@ class PostList {
 	public $posts = array();
 	public $pagination;
 	
-	public function __construct($resultsPerPage, $currentPage, $order = "asc", $tagfilter = false) {
+	public function __construct($resultsPerPage, $currentPage, $order = "asc", $tagfilter = false, $parse = false) {
 		if($tagfilter !== false) {
 			$tagfilter = strtolower($tagfilter);
 		}
@@ -46,16 +46,19 @@ class PostList {
 		else {
 			$this->order = "desc";
 		}
-		$this->loadPosts();
+		$this->loadPosts($parse);
 		$this->loadPagination();
 	}
 	
-	public function loadPosts() {
+	public function loadPosts($parse) {
 		$offset = ($this->currentPage-1) * $this->resultsPerPage;
 		for($i=1;$i<$this->resultsPerPage+1;$i++) {
 			if($i+ $offset <= $this->maximumPosts) {
 				$x = array();
 				$x = Database::readPostByIndex(false, $i + $offset, $this->order, $this->tagFilter);
+				if($parse) {
+						$x['content'] = Parsedown::instance()->parse($x['content']);
+				}
 				array_push($this->posts, $x);
 				unset($x);
 			}

@@ -814,7 +814,8 @@ class Parsedown
 
 						if ($element['!'])
 						{
-							$markup .= '<img alt="'.$element['a'].'" src="'.$element['»'].'" />';
+							$rel_location = isset($GLOBALS["directory"]) ? $GLOBALS["directory"] : "";
+							$markup .= '<img alt="'.$element['a'].'" src="' .$rel_location . $element['»'].'" />';
 						}
 						else
 						{

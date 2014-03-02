@@ -73,7 +73,7 @@
 									<a href="?action=editpost&id=<?php echo $post["id"]; ?>"><?php echo $post["title"]; ?></a>
 								</h4>
 								<p>
-								<?php echo nl2br($post["content"]); ?>
+								<?php echo substr(nl2br(strip_tags($post["content"])),0,256); ?>
 								<br/>
 								<?php foreach($post["tags"] as $key => $tag) { ?>
 									<a href="?action=oldposts<?php echo Header::formatHeaderGetList("perpage") ?>&tag=<?php echo $tag; ?>"><?php echo $tag; ?></a><?php if($key !== count($post["tags"])-1) { ?>,<?php } ?>

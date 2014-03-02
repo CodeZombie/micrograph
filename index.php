@@ -20,12 +20,19 @@ include('system/file.php');
 include('system/images.php');
 include('system/postlist.php');
 include('system/draftlist.php');
+include('system/parsedown.php');
 
 $GLOBALS["ERROR"] = "";
 $GLOBALS["MESSAGE"] = "";
 
 session_start();
 
+File::createFolderIfNotExist("content/draftdata");
+File::createFolderIfNotExist("config");
+File::createFolderIfNotExist("content/draftmarkdown");
+File::createFolderIfNotExist("content/images");
+File::createFolderIfNotExist("content/markdown");
+File::createFolderIfNotExist("content/postdata");
 File::createFileIfNotExist("content/tags.json");
 File::createFileIfNotExist("config/log.conf.php");
 
@@ -35,6 +42,7 @@ foreach($requiredFolder as $folder) {
 		die("<b>Fatal Error:</b> Directory <em>" . $folder . "</em> does not exist. Please create it with proper permissions.");
 	}
 }
+
 function goHome($priority = "post") {
 
 	if($priority == "draft") {

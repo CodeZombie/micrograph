@@ -16,7 +16,7 @@ class Database {
 		return false;
 	}	
 
-	public static function readPostById($draft, $id) {
+	public static function readPostById($draft, $id, $parse = false) {
 		if($draft) {
 			$datapath = "content/draftdata/";
 			$mdpath = "content/draftmarkdown/";
@@ -37,9 +37,11 @@ class Database {
 		if(isset($postdata["last_update_time"])) {
 			$outputdata["last_update_time"] = $postdata["last_update_time"];
 		}
-		
+
 		$outputdata["content"] = File::readFile($mdpath . $id . ".md");
-		
+		if($parse) {
+			$outputdata["content"] = nl2br(Parsedown::instance()->parse($outputdata["content"]));
+		}
 		if($outputdata["content"]===false) {
 			
 			return false;
