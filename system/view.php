@@ -4,27 +4,27 @@ class View {
 	public static function showError() {
 		$_DISPLAY = true;
 		if($GLOBALS["ERROR"] != "") {
-			include("/../views/error.php");
+			include("views/error.php");
 		}
 	}
 	public static function showMessage() {
 		$_DISPLAY = true;
 		if($GLOBALS["MESSAGE"] != "") {
-			include("/../views/message.php");
+			include("views/message.php");
 		}
 	}
 	public static function showRegister() {
 		$_DISPLAY = true;
-		include("/../views/header.php");
-		include("/../views/register.php");
-		include("/../views/footer.php");
+		include("views/header.php");
+		include("views/register.php");
+		include("views/footer.php");
 	}
 	
 	public static function showLogin() {
 		$_DISPLAY = true;
-		include("/../views/header.php");
-		include("/../views/login.php");
-		include("/../views/footer.php");
+		include("views/header.php");
+		include("views/login.php");
+		include("views/footer.php");
 	}
 	public static function showImagePage() {
 		$_DISPLAY = true;
@@ -35,12 +35,12 @@ class View {
 		$perpage = 16;
 		$pagin = getPaginateArray($page,$perpage,File::getNumberOfFilesInDirectory("content/images/"));
 		$active = 2;
-		include("/../views/header.php");
-		include("/../views/navbar.php");
+		include("views/header.php");
+		include("views/navbar.php");
 		self::showError();
 		self::showMessage();
-		include("/../views/imagepages.php");
-		include("/../views/footer.php");
+		include("views/imagepages.php");
+		include("views/footer.php");
 	}
 	public static function showDrafts($currentPage = null) {
 		$_DISPLAY = true;
@@ -60,12 +60,12 @@ class View {
 
 		$active = 4;
 		
-		include("/../views/header.php");
-		include("/../views/navbar.php");
+		include("views/header.php");
+		include("views/navbar.php");
 		self::showError();
 		self::showMessage();
-		include("/../views/draftlist.php");
-		include("/../views/footer.php");
+		include("views/draftlist.php");
+		include("views/footer.php");
 	}
 	public static function showPosts($currentPage = null) {
 		$_DISPLAY = true;
@@ -91,12 +91,12 @@ class View {
 
 		$active = 0;
 		
-		include("/../views/header.php");
-		include("/../views/navbar.php");
+		include("views/header.php");
+		include("views/navbar.php");
 		self::showError();
 		self::showMessage();
-		include("/../views/postlist.php");
-		include("/../views/footer.php");
+		include("views/postlist.php");
+		include("views/footer.php");
 	}
 	
 	public static function showNewPost($backup = false) {
@@ -113,12 +113,12 @@ class View {
 		$form_action = "?action=savepost";
 		
 		$active = 1;
-		include("/../views/header.php");
-		include("/../views/navbar.php");
+		include("views/header.php");
+		include("views/navbar.php");
 		self::showError();
 		self::showMessage();
-		include("/../views/editor.php");
-		include("/../views/footer.php");
+		include("views/editor.php");
+		include("views/footer.php");
 	}
 
 	public static function showPostEditor($id) {
@@ -142,8 +142,9 @@ class View {
 				}
 			}
 		}
-		
-		$post_original_time = $post["post_time"];
+		if(isset($post["post_time"])) {
+			$post_original_time = $post["post_time"];
+		}
 		
 		if(isset($post["last_update_time"])) {
 			$post_update_time = $post["last_update_time"];
@@ -154,12 +155,12 @@ class View {
 		$button_red_href = "?action=deletepost&id=" . $id;
 		
 		$active = -1;
-		include("/../views/header.php");
-		include("/../views/navbar.php");
+		include("views/header.php");
+		include("views/navbar.php");
 		self::showError();
 		self::showMessage();
-		include("/../views/editor.php");
-		include("/../views/footer.php");
+		include("views/editor.php");
+		include("views/footer.php");
 	}
 	
 	public static function showDraftEditor($id) {
@@ -189,22 +190,22 @@ class View {
 		$button_red_href = "?action=deletedraft&id=" . $id;
 		
 		$active = -1;
-		include("/../views/header.php");
-		include("/../views/navbar.php");
+		include("views/header.php");
+		include("views/navbar.php");
 		self::showError();
 		self::showMessage();
-		include("/../views/editor.php");
-		include("/../views/footer.php");
+		include("views/editor.php");
+		include("views/footer.php");
 	}
 	
 	public static function showSettings() {
 		$_DISPLAY = true;
 		$active = 3;
-		include("/../views/header.php");
-		include("/../views/navbar.php");
+		include("views/header.php");
+		include("views/navbar.php");
 		self::showError();
 		self::showMessage();
-		include("/../views/settings.php");
-		include("/../views/footer.php");
+		include("views/settings.php");
+		include("views/footer.php");
 	}
 }

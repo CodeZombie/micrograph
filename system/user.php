@@ -42,13 +42,13 @@ class User {
 	public static function tryLogin($usernametotry, $passwordtotry) {
 		$log = Json::readJsonFile("config/log.conf.php",true);
 		$ip = $_SERVER['REMOTE_ADDR'];
-		
-		foreach($log as $key => $val) {
-			if($val['time'] + 1800 < time()) {
-				$log = array_splice($log,array_search($ip,$log) + 1,1);
+		if($log != "") {
+			foreach($log as $key => $val) {
+				if($val['time'] + 1800 < time()) {
+					$log = array_splice($log,array_search($ip,$log) + 1,1);
+				}
 			}
 		}
-		
 		if(isset($log[$ip])) {
 			if($log[$ip]['attempts'] >= 10) {
 				die("Too many login attempts. please wait before trying again. " . (string)(round(($log[$ip]['time'] + 1800 - time())/60,1)) . " minutes remaining");
