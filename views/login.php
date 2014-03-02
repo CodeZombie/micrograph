@@ -1,7 +1,7 @@
 <?php if(isset($_DISPLAY)) { ?>
 	<div class="container">
+	<?php View::showError(); ?>
 		<div class="col-md-4 center-block promptbox">
-			<?php View::showError(); ?>
 			<h2>Login</h2>
 			<form role="form" method="post" action="<?php $_SERVER['SCRIPT_NAME'] ?>?action=trylogin" name="loginform" id="loginform">
 				<div class="form-group">

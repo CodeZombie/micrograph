@@ -5,7 +5,6 @@ TODO:
 		+ Option to change username/password
 		+ Button to download entire blog archive as a zip
 	API calls
-	Log login attempts and block IP after 10 tries for an hour.
 */
 DEFINE("SESSION_TIMEOUT_TIME",14400);
 
@@ -28,6 +27,7 @@ $GLOBALS["MESSAGE"] = "";
 session_start();
 
 File::createFileIfNotExist("content/tags.json");
+File::createFileIfNotExist("config/log.conf.php");
 
 $requiredFolder = array("content/draftdata/","content/draftmarkdown/","content/images/","content/markdown/","content/postdata/");
 foreach($requiredFolder as $folder) {
@@ -244,8 +244,10 @@ if(User::isLoggedIn()) {
 			goHome();
 			break;
 	}
-	if($_SESSION['timeout'] + SESSION_TIMEOUT_TIME < time()) {
-		User::logout();
+	if(Header::getHeaderGet('action') != "logout" ) {
+		if($_SESSION['timeout'] + SESSION_TIMEOUT_TIME < time()) {
+			User::logout();
+		}
 	}
 }
 else {

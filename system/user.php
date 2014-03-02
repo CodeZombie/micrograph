@@ -40,6 +40,21 @@ class User {
 		return true;
 	}	
 	public static function tryLogin($usernametotry, $passwordtotry) {
+		$log = Json::readJsonFile("config/log.conf.php",true);
+		$ip = $_SERVER['REMOTE_ADDR'];
+		
+		foreach($log as $key => $val) {
+			if($val['time'] + 1800 < time()) {
+				$log = array_splice($log,array_search($ip,$log) + 1,1);
+			}
+		}
+		
+		if(isset($log[$ip])) {
+			if($log[$ip]['attempts'] >= 10) {
+				die("Too many login attempts. please wait before trying again. " . (string)(round(($log[$ip]['time'] + 1800 - time())/60,1)) . " minutes remaining");
+			}
+		}
+		
 		$credentials = Json::readJsonFile("config/login.conf.php", true);
 		$realUsername =  $credentials['username'];
 		$realPwhash =  $credentials['pwhash'];
@@ -54,14 +69,39 @@ class User {
 			$GLOBALS["ERROR"] = "Please enter your password";
 			return false;
 		}
-		sleep(1.25);
 		
 		if($usernametotry==$realUsername && bcrypt_check($passwordtotry, $realPwhash)) {
 			$_SESSION['userid'] = "admin";
+			if(isset($log[$ip])) {
+				$newdata = array_splice($log,(1+array_search($ip,$log)),1);
+			}
+			else {
+				$newdata = $log;
+			}
+			Json::saveJsonFile($newdata, "config/log.conf.php", true);
 			return true;
 		}
 		else {
-			$GLOBALS["ERROR"] = "Username or Password was incorrect";
+			$data = array();
+			if(isset($log[$ip]['attempts'])) {
+				$data[$ip]['attempts'] = $log[$ip]['attempts'] + 1;
+			}
+			else {
+				$data[$ip]['attempts'] = 1;
+			}
+			$data[$ip]['time'] = time();
+			if($log != "") {
+				$newdata = array_merge($log,$data);
+			}
+			else{
+				$newdata = $data;
+			}
+			Json::saveJsonFile($newdata, "config/log.conf.php", true);
+			$attempts_left = 9;
+			if(isset($log[$ip])) {
+				$attempts_left = 10 - ($log[$ip]['attempts']+1);
+			}
+			$GLOBALS["ERROR"] = "Username or Password was incorrect. " . (string)($attempts_left) . " attempts remaining";
 			return false;
 		}
 	}
