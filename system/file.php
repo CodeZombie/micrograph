@@ -61,9 +61,11 @@ class File {
 	}
 	
 	public static function getFilesInDirectory($directory, $order = "asc") {
-		$location = isset($GLOBALS["directory"]) ? $GLOBALS["directory"] : "";
+		if(isset($GLOBALS["directory"])) {
+			$directory = $GLOBALS["directory"] . $directory;
+		}
 		$results = array();
-		$results = scandir($location . $directory);
+		$results = scandir($directory);
 		foreach($results as $key => $value) {
 			if($value == "." || $value == "..") {
 				unset($results[$key]);
@@ -80,8 +82,6 @@ class File {
 	}
 	
 	public static function getFileNameByIndex($directory, $n, $order = "asc") {
-		$location = isset($GLOBALS["directory"]) ? $GLOBALS["directory"] : "";
-		$directory = $location . $directory;
 		return self::getFilesInDirectory($directory, $order)[$n-1];
 	}
 	
@@ -91,8 +91,6 @@ class File {
 	}
 	
 	public static function getNumberOfFilesInDirectory($directory) {
-		$location = isset($GLOBALS["directory"]) ? $GLOBALS["directory"] : "";
-		$directory = $location . $directory;
 		return count(self::getFilesInDirectory($directory, "asc"));
 	}
 }
