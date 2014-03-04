@@ -18,6 +18,7 @@ $(document).ready(function() {
 		else {
 			displayError("Image failed to upload");
 		}
+		console.log(data);
 		//implement a failure state.
 	});
 });

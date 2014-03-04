@@ -814,12 +814,23 @@ class Parsedown
 
 						if ($element['!'])
 						{
-							//check if the path is a hyperlink (contains a '//') or not
-							$rel_location = "";
-							if(strpos($element['»'],'//') === false) {
-							$rel_location = isset($GLOBALS["directory"]) ? $GLOBALS["directory"] : "";
+							$global_path = isset($GLOBALS["directory"]) ? $GLOBALS["directory"] : "";
+							$image = $element['»'];
+							$thumb = $image;
+							
+							if(strpos($image,'//') === false) {
+								$thumb = substr($element['»'], 0, strrpos($element['»'],"/")) . "/thumbs/thumb." . substr($element['»'],strrpos($element['»'],"/")+1, strlen($element['»']));
+								
+								if(isset($GLOBALS["mg_constant_in_production"])) {
+									$thumb = $global_path . $thumb;
+									$image = $global_path . $image;
+								}
+								if(!File::fileExists($thumb)) {
+									$thumb = $image;
+								}
 							}
-							$markup .= '<img alt="'.$element['a'].'" src="' .$rel_location . $element['»'].'" />';
+							
+							$markup .= '<a href="' . $image . '"><img alt="'.$element['a'].'" src="' .$thumb.'" /></a>';
 						}
 						else
 						{

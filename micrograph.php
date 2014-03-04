@@ -1,5 +1,6 @@
 <?php
 $GLOBALS["directory"] = substr(dirname(__FILE__), strlen(dirname($_SERVER['SCRIPT_FILENAME']))+1, strlen(dirname(__FILE__))).'/';
+$GLOBALS["mg_constant_in_production"] = true;
 include($GLOBALS["directory"] . '/system/json.php');
 include($GLOBALS["directory"] . '/system/paginate.php');
 include($GLOBALS["directory"]. '/system/posts.php');

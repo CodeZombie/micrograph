@@ -31,12 +31,13 @@ File::createFolderIfNotExist("content/draftdata");
 File::createFolderIfNotExist("config");
 File::createFolderIfNotExist("content/draftmarkdown");
 File::createFolderIfNotExist("content/images");
+File::createFolderIfNotExist("content/images/thumbs");
 File::createFolderIfNotExist("content/markdown");
 File::createFolderIfNotExist("content/postdata");
 File::createFileIfNotExist("content/tags.json");
 File::createFileIfNotExist("config/log.conf.php");
 
-$requiredFolder = array("content/draftdata/","content/draftmarkdown/","content/images/","content/markdown/","content/postdata/");
+$requiredFolder = array("content/draftdata/","content/draftmarkdown/","content/images/","content/markdown/","content/postdata/","content/images/thumbs/");
 foreach($requiredFolder as $folder) {
 	if(!File::fileExists($folder)) {
 		die("<b>Fatal Error:</b> Directory <em>" . $folder . "</em> does not exist. Please create it with proper permissions.");
@@ -224,7 +225,9 @@ if(User::isLoggedIn()) {
 			break;
 			
 		case "uploadimage":
-			Images::uploadImage($_FILES['image']);
+			if(isset($_FILES['image'])) {
+				Images::uploadImage($_FILES['image']);
+			}
 			View::showImagePage();
 			break;
 		case "recoverbackup":

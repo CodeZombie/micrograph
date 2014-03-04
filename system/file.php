@@ -79,6 +79,9 @@ class File {
 			if($value == "." || $value == "..") {
 				unset($results[$key]);
 			}
+			if(is_dir($directory . $value)) {
+				unset($results[$key]);
+			}
 		}
 
 		$results= array_values($results);
